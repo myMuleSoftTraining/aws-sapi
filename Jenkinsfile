@@ -5,11 +5,8 @@ pipeline {
     stage('Build') {
       steps {
 			echo "***Project build has started***"
-<<<<<<< HEAD
             bat 'mvn -B -U -e -V clean -DskipTests package'
-=======
-            bat 'mvn -B -U -e -V clean'
->>>>>>> 15bb2ddc11863272d236f826b6f4f1660dcadace
+
       }
     }
 
