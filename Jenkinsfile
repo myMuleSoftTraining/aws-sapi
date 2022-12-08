@@ -1,11 +1,14 @@
 pipeline {
 
   agent any
+  environment {
+    M2SETTINGS = "C:\\Users\\sisch\\.m2\\settings.xml"
+  }
   stages {
     stage('Build') {
       steps {
 			echo "***Project build has started***"
-            bat 'mvn -B -U -e -V clean -DskipTests package'
+            bat 'mvn -B -U -e -V clean -gs %M2SETTINGS% -DskipTests package'
       }
     }
 
