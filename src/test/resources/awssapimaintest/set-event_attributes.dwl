@@ -1,0 +1,31 @@
+{
+  "headers": {
+    "client_secret": "123225",
+    "client_id": "123225",
+    "x-correlation-id": "789456321",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.29.2",
+    "accept": "*/*",
+    "postman-token": "cf76e661-c593-48c9-89c9-a4fd9b185426",
+    "host": "localhost:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "9767"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/covid/v1/document",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/document",
+  "listenerPath": "/covid/v1/*",
+  "relativePath": "/v1/document",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/covid/v1/document",
+  "rawRequestPath": "/covid/v1/document",
+  "remoteAddress": "/127.0.0.1:54940",
+  "requestPath": "/covid/v1/document"
+}

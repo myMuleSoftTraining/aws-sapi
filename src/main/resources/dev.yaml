@@ -1,0 +1,7 @@
+"http":
+  "port" : "8081"
+  
+"aws":
+  "bucketName" : "uho-covid-doc"
+  "accessKeyID" : "![7yofTyJkAfUNufHhO+vCTTQdjYMhGKXGTFaePDxLEtU=]"
+  "secretAccessKey" : "![c0oDQjxYy+nrn5LABWpnYUcVSIwMRGxgwnA5Jl5DuMiv3Mkxspk2CX+JyM6RG0Ml]"

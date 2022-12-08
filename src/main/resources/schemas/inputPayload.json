@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "bucketName": {
+      "type": "string"
+    },
+    "folderPath": {
+      "type": "string"
+    },
+    "fileName": {
+      "type": "string"
+    },
+    "document": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "bucketName",
+    "folderPath",
+    "fileName",
+    "document"
+  ]
+}

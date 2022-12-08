@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+	<sub-flow name="aws-connectionSub_Flow" doc:id="2cabb916-054b-4ef0-9d74-b8b62afc112c" >
+		<logger level="INFO" doc:name="Logger" doc:id="5e61e773-10df-4754-938e-eccdc148ae4f" message='correlationID #[attributes.headers."x-correlation-id"], transactionID #[vars.transactionID] - S3 connection subflow has started - payload #[payload]' />
+		<s3:put-object doc:name="Upload Document To AWS Bucket" doc:id="cfe7b99b-5e8e-4b91-b41d-bda64f2af364" config-ref="Amazon_S3_Configuration" bucketName="#[vars.bucket]" key="#[vars.path]" />
+		<logger level="INFO" doc:name="Logger" doc:id="c3eaa168-eedd-4b2d-9b7a-e87d918f76a8" message='CorrelationID #[attributes.headers."x-correlation-id"], transactionID #[vars.transactionID] - S3 connection subflow has completed.'/>
+	</sub-flow>
+</mule>

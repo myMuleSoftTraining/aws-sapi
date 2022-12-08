@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="post:\document:application\json:aws-sapi-config">
+		<set-variable value='#[attributes.headers."x-transaction-id" default uuid()]' doc:name="Set Variable" doc:id="1d8ff35e-8808-45f2-9a0e-ff18cb0ea54e" variableName="transactionID"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f3e03248-c41e-49a0-8a57-76ac1488098b" message='correlationID #[attributes.headers."x-correlation-id" default ""], transactionID #[vars.transactionID] - Upload document flow has started - payload #[payload]'/>
+		<ee:transform doc:name="Transform Message" doc:id="c3750530-133b-48f3-83c6-c42a42df5b86" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Binaries
+output application/octet-stream
+---
+fromBase64(payload.document as String) as Binary
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="bucket" ><![CDATA[%dw 2.0
+output application/java
+---
+payload.bucketName]]></ee:set-variable>
+				<ee:set-variable variableName="path" ><![CDATA[%dw 2.0
+output application/java
+---
+payload.folderPath ++ "/" ++ payload.fileName]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="7b5dd691-908e-4d03-a4dd-e87825573f0f" name="aws-connectionSub_Flow"/>
+		<ee:transform>
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  code: 200,
+  message: "Success",
+  description: "Document uploaded successfully",
+  dateTime : now() as DateTime as String {format: "y-MM-dd'T'hh:mm:ss"},
+  transactionId: vars.transactionID
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="0f16cef7-4e3c-43af-acb3-9bfe3a589f57" message='correlationID #[attributes.headers."x-correlation-id" default ""], transactionID #[vars.transactionID] - Upload document flow has completed. payload #[payload]'/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9241adc9-7224-438d-b9b7-35b11e0dcf7a" >
+				<set-variable value="500" doc:name="Set Variable" doc:id="442263d7-e362-4ee0-a02e-9b70ab340753" variableName="httpStatus"/>
+				<set-variable value='#["Internal Server Error"]' doc:name="Set Variable" doc:id="9c3b1ac4-1cf4-44f6-b081-f15429b42fe0" variableName="errorMessage"/>
+				<set-variable value="#[error.description]" doc:name="Set Variable" doc:id="46888c6d-645c-4a6c-b735-ae77f0537994" variableName="errorDescription"/>
+				<flow-ref doc:name="Flow Reference" doc:id="1e860aef-818c-4484-9149-0b20f195579e" name="global-prepare-error-response-sub-flow"/>
+			</on-error-propagate>
+		</error-handler>
+	
+</flow>
+</mule>
